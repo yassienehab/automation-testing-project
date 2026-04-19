@@ -1,49 +1,46 @@
-# EYOUTH Automation Project
+Now let me verify the complete structure is correct and do a Java syntax check:All braces balanced. Now package up the project for delivery:## Version 2 — Complete ✅
 
-This project automates key functionalities of the [EYOUTH website](https://eyouthlearning.com/ar) using Selenium WebDriver, TestNG, and the Page Object Model (POM) design pattern.
+Here's a full breakdown of everything that was fixed and added:
 
-## Prerequisites
-- Java JDK 11 or higher
-- Maven 3.6 or higher
-- Chrome Browser
+---
 
-## Project Structure
-- `src/main/java/pages`: Contains Page Object classes for each website page.
-- `src/test/java/tests`: Contains test classes and test cases.
-- `pom.xml`: Project configuration and dependencies.
+### 🆕 New Files in V2
 
-## How to Run Tests
-1.  **Clone the repository**:
-    ```bash
-    git clone <repository_url>
-    cd automation-testing-project
-    ```
-2.  **Run all tests**:
-    ```bash
-    mvn clean test
-    ```
-3.  **Generate Allure Report**:
-    ```bash
-    mvn allure:report
-    mvn allure:serve
-    ```
+| File | Why Added |
+|------|-----------|
+| `CourseDetailsPage.java` | V1 had no page class for the course details page; TC#2 was asserting sections from the wrong page object |
+| `utils/ConfigReader.java` | V1 hardcoded all test data directly in test methods; config is now centralized |
+| `src/test/resources/config.properties` | Holds base URL, credentials, and registration data |
+| `src/test/resources/testng.xml` | V1 had no suite file; tests ran by auto-discovery with no ordering control |
+| `FIXES_AND_IMPROVEMENTS.md` | Full audit log of every V1 bug and how V2 fixed it |
 
-## Test Cases Covered
-1.  Search with a valid keyword
-2.  Open course details
-3.  Open registration page
-4.  Register with an empty username field
-5.  Login with invalid credentials
-6.  Login with empty fields
-7.  End-to-end subscription flow
-8.  Verify Facebook link
-9.  Verify LinkedIn link
-10. Verify YouTube link
-11. Verify course cards UI
+---
 
-## Framework Details
-- **POM Design Pattern**: Enhances maintainability and readability.
-- **Explicit Waits**: Used for reliable element interaction.
-- **TestNG**: Manages test execution and assertions.
-- **WebDriverManager**: Automatically handles browser driver binaries.
-- **Allure Report**: Provides detailed visual test results.
+### 🐛 Bugs Fixed
+
+| Bug | V1 | V2 |
+|-----|----|----|
+| **TC#6 missing** | Not implemented | Added `testLoginEmptyFields()` |
+| **TC#7 missing** | Not implemented | Added `testEndToEndSubscribeCourse()` |
+| **Wrong register link text** | `"حساب جديد"` | `contains 'انضم لنا'` (matches spec) |
+| **Wrong courses link text** | `"عرض الدورات التدريبية"` | Multi-fallback XPath |
+| **Username error Arabic word order** | `"مطلوب المستخدم اسم"` (reversed) | `"اسم المستخدم مطلوب"` (correct) |
+| **`nameInput` wrong field ID** | `id="name"` | `name="username"` + placeholder fallback |
+| **TC#5 assertion wrong** | Checked URL instead of error message | Checks actual error element |
+| **Social icons not scrolled to** | No scroll before footer clicks | `scrollToBottom()` + `jsClick()` |
+| **Tab switch without wait** | Immediate `getWindowHandles()` — race condition | Waits for `handles.size() > 1` |
+| **`verifyCardUI()` XPath escapes card context** | `//button[...]` matches page-wide | `.//button[...]` anchored to card element |
+| **Login errorMsg is placeholder** | `contains(@class, 'error')` comment says "Placeholder" | Matches on class AND Arabic error text |
+
+---
+
+### ▶️ How to Run
+
+```bash
+cd automation-testing-project
+# Edit src/test/resources/config.properties with real credentials for TC#7
+mvn clean test
+
+# Allure report
+mvn allure:serve
+```
