@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="EYouth Automation Suite" verbose="2" parallel="none">
+
+    <test name="EYouth Tests">
+        <classes>
+            <class name="tests.EyouthTests">
+                <methods>
+                    <include name="testSearchKeyword"/>
+                    <include name="testOpenCourseDetails"/>
+                    <include name="testOpenRegistrationPage"/>
+                    <include name="testRegisterEmptyUsername"/>
+                    <include name="testLoginInvalidCredentials"/>
+                    <include name="testLoginEmptyFields"/>
+                    <include name="testEndToEndSubscribeCourse"/>
+                    <include name="testFacebookLink"/>
+                    <include name="testLinkedinLink"/>
+                    <include name="testYoutubeLink"/>
+                    <include name="testCourseCardUI"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>
